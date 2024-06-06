@@ -1,20 +1,20 @@
-package tech.execsuroot.template.command;
+package tech.execsuroot.jarticle.command;
 
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Permission;
 import dev.jorel.commandapi.annotations.Subcommand;
 import org.bukkit.command.CommandSender;
-import tech.execsuroot.template.TemplatePlugin;
-import tech.execsuroot.template.config.ConfigFeature;
-import tech.execsuroot.template.config.MessagesConfig;
-import tech.execsuroot.template.feature.FeatureManager;
+import tech.execsuroot.jarticle.JarticlePlugin;
+import tech.execsuroot.jarticle.config.ConfigFeature;
+import tech.execsuroot.jarticle.config.MessagesConfig;
+import tech.execsuroot.jarticle.feature.FeatureManager;
 
 /**
  * This class represents the main command of the plugin.
  */
-@Command("template") // ToDo: Change the command name
-@Permission("template.cmd") // ToDo: Change the command permission
+@Command("jarticle")
+@Permission("jarticle")
 public class MainCommand {
 
     @Default
@@ -23,8 +23,9 @@ public class MainCommand {
     }
 
     @Subcommand("reload")
+    @Permission("jarticle.reload")
     public static void reload(CommandSender sender) {
-        TemplatePlugin plugin = TemplatePlugin.getInstance();
+        JarticlePlugin plugin = JarticlePlugin.getInstance();
         FeatureManager featureManager = plugin.getFeatureManager();
         ConfigFeature configFeature = featureManager.getFeature(ConfigFeature.class).orElseThrow();
         Long startTimestamp = System.currentTimeMillis();

@@ -1,4 +1,4 @@
-package tech.execsuroot.template.feature;
+package tech.execsuroot.jarticle.feature;
 
 import java.util.Optional;
 

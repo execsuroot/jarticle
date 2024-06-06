@@ -1,6 +1,6 @@
-package tech.execsuroot.template.feature;
+package tech.execsuroot.jarticle.feature;
 
-import tech.execsuroot.template.TemplatePlugin;
+import tech.execsuroot.jarticle.JarticlePlugin;
 
 /**
  * Represents a feature of the plugin.
@@ -10,21 +10,21 @@ public interface PluginFeature {
     /**
      * Called when the plugin is loaded.
      */
-    default void onLoad(TemplatePlugin plugin) {
+    default void onLoad(JarticlePlugin plugin) {
         // Empty by default for convenience
     }
 
     /**
      * Called when the plugin is enabled.
      */
-    default void onEnable(TemplatePlugin plugin) {
+    default void onEnable(JarticlePlugin plugin) {
         // Empty by default for convenience
     }
 
     /**
      * Called when the plugin is disabled.
      */
-    default void onDisable(TemplatePlugin plugin) {
+    default void onDisable(JarticlePlugin plugin) {
         // Empty by default for convenience
     }
 

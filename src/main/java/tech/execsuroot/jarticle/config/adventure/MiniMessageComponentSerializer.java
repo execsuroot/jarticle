@@ -1,4 +1,4 @@
-package tech.execsuroot.template.config.adventure;
+package tech.execsuroot.jarticle.config.adventure;
 
 import de.exlll.configlib.Serializer;
 import lombok.RequiredArgsConstructor;

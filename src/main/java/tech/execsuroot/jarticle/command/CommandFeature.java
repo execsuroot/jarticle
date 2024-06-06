@@ -1,10 +1,10 @@
-package tech.execsuroot.template.command;
+package tech.execsuroot.jarticle.command;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import dev.jorel.commandapi.CommandAPILogger;
-import tech.execsuroot.template.TemplatePlugin;
-import tech.execsuroot.template.feature.PluginFeature;
+import tech.execsuroot.jarticle.JarticlePlugin;
+import tech.execsuroot.jarticle.feature.PluginFeature;
 
 import java.util.Set;
 
@@ -14,22 +14,21 @@ import java.util.Set;
 public class CommandFeature implements PluginFeature {
 
     @Override
-    public void onLoad(TemplatePlugin plugin) {
+    public void onLoad(JarticlePlugin plugin) {
         CommandAPI.setLogger(CommandAPILogger.fromJavaLogger(plugin.getLogger()));
         CommandAPI.onLoad(new CommandAPIBukkitConfig(plugin).usePluginNamespace());
         Set.of(
                 MainCommand.class
-                // ToDo: Include your command classes here
         ).forEach(CommandAPI::registerCommand);
     }
 
     @Override
-    public void onEnable(TemplatePlugin plugin) {
+    public void onEnable(JarticlePlugin plugin) {
         CommandAPI.onEnable();
     }
 
     @Override
-    public void onDisable(TemplatePlugin plugin) {
+    public void onDisable(JarticlePlugin plugin) {
         CommandAPI.onDisable();
     }
 

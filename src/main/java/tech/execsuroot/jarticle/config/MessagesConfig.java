@@ -1,4 +1,4 @@
-package tech.execsuroot.template.config;
+package tech.execsuroot.jarticle.config;
 
 import de.exlll.configlib.Configuration;
 import lombok.Getter;
@@ -24,17 +24,15 @@ public class MessagesConfig {
     @Setter
     private static MessagesConfig instance;
 
-    // ToDo: Change the messages below
     private Component mainCommandHelp = MiniMessage.miniMessage().deserialize(
             """
                         <yellow>Usage:
-                        <gray>/template reload <white>— reload configuration.
+                        <gray>/jarticle reload <white>— reload configuration.
                     """.stripIndent().stripTrailing()
     );
     private Component configReloaded = MiniMessage.miniMessage().deserialize(
             "<green>Configuration reloaded in <white>{duration}</white> ms."
     );
-    // ToDo: Include your messages here
 
     public Component getConfigReloaded(Long duration) {
         Component original = this.configReloaded;

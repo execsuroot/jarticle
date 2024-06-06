@@ -1,4 +1,4 @@
-package tech.execsuroot.template.util;
+package tech.execsuroot.jarticle.util;
 
 import lombok.Setter;
 

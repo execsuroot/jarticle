@@ -7,9 +7,9 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.0" // runPaper
 }
 
-group = "tech.execsuroot.template" // ToDo: Change to your group
+group = "tech.execsuroot.jarticle"
 version = "1.0.0"
-description = "Template for PaperMC plugin." // ToDo: Change to your plugin's description
+description = "More particles — more fun!"
 
 repositories {
     mavenCentral()
@@ -50,7 +50,7 @@ idea {
 
 tasks {
     runServer {
-        version("1.20.6") // ToDo: Change to the version you want to run the server with
+        version("1.20.6")
     }
 
     // Setting project-related placeholders in resources

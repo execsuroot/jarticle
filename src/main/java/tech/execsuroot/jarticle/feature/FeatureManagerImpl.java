@@ -1,8 +1,8 @@
-package tech.execsuroot.template.feature;
+package tech.execsuroot.jarticle.feature;
 
 import lombok.NonNull;
-import tech.execsuroot.template.TemplatePlugin;
-import tech.execsuroot.template.util.Log;
+import tech.execsuroot.jarticle.JarticlePlugin;
+import tech.execsuroot.jarticle.util.Log;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 
 public class FeatureManagerImpl implements FeatureManager {
 
-    private final TemplatePlugin plugin;
+    private final JarticlePlugin plugin;
     private final List<PluginFeature> orderedFeatures;
     private final Map<Class<? extends PluginFeature>, PluginFeature> featureByClassMap;
     private final Set<PluginFeature> enabledFeatures = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-    public FeatureManagerImpl(@NonNull TemplatePlugin plugin, @NonNull PluginFeature[] features) {
+    public FeatureManagerImpl(@NonNull JarticlePlugin plugin, @NonNull PluginFeature[] features) {
         this.plugin = plugin;
         this.orderedFeatures = Arrays.stream(features).sorted(Comparator.comparing(PluginFeature::getPriority)).collect(Collectors.toList());
         this.featureByClassMap = toFeatureMap(features);

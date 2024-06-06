@@ -1,26 +1,25 @@
-package tech.execsuroot.template; // ToDo: Change to your package name
+package tech.execsuroot.jarticle;
 
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
-import tech.execsuroot.template.command.CommandFeature;
-import tech.execsuroot.template.config.ConfigFeature;
-import tech.execsuroot.template.feature.FeatureManager;
-import tech.execsuroot.template.feature.FeatureManagerImpl;
-import tech.execsuroot.template.feature.PluginFeature;
-import tech.execsuroot.template.util.Log;
+import tech.execsuroot.jarticle.command.CommandFeature;
+import tech.execsuroot.jarticle.config.ConfigFeature;
+import tech.execsuroot.jarticle.feature.FeatureManager;
+import tech.execsuroot.jarticle.feature.FeatureManagerImpl;
+import tech.execsuroot.jarticle.feature.PluginFeature;
+import tech.execsuroot.jarticle.util.Log;
 
 /**
  * This class represents the main class of the plugin.
  */
-// ToDo: Change to your plugin name
-public class TemplatePlugin extends JavaPlugin {
+public class JarticlePlugin extends JavaPlugin {
 
     /**
      * The instance of the plugin.
      * Use to access the plugin.
      */
     @Getter
-    private static TemplatePlugin instance;
+    private static JarticlePlugin instance;
     /**
      * The feature manager of the plugin.
      * Use to get access to the features.
@@ -28,7 +27,7 @@ public class TemplatePlugin extends JavaPlugin {
     @Getter
     private final FeatureManager featureManager;
 
-    public TemplatePlugin() {
+    public JarticlePlugin() {
         super();
         instance = this;
         Log.setLogger(getLogger());
@@ -39,7 +38,6 @@ public class TemplatePlugin extends JavaPlugin {
         return new PluginFeature[]{
                 new CommandFeature(),
                 new ConfigFeature(),
-                // ToDo: Include your features here
         };
     }
 

@@ -1,14 +1,14 @@
-package tech.execsuroot.template.config;
+package tech.execsuroot.jarticle.config;
 
 import de.exlll.configlib.NameFormatters;
 import de.exlll.configlib.YamlConfigurationProperties;
 import de.exlll.configlib.YamlConfigurations;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import tech.execsuroot.template.TemplatePlugin;
-import tech.execsuroot.template.config.adventure.MiniMessageComponentSerializer;
-import tech.execsuroot.template.feature.PluginFeature;
-import tech.execsuroot.template.util.Log;
+import tech.execsuroot.jarticle.JarticlePlugin;
+import tech.execsuroot.jarticle.config.adventure.MiniMessageComponentSerializer;
+import tech.execsuroot.jarticle.feature.PluginFeature;
+import tech.execsuroot.jarticle.util.Log;
 
 import java.nio.file.Path;
 
@@ -17,7 +17,7 @@ import java.nio.file.Path;
  */
 public class ConfigFeature implements PluginFeature {
 
-    private final Path configFolder = TemplatePlugin.getInstance().getDataFolder().toPath();
+    private final Path configFolder = JarticlePlugin.getInstance().getDataFolder().toPath();
     private final YamlConfigurationProperties yamlProperties = YamlConfigurationProperties.newBuilder()
             .addSerializer(Component.class, new MiniMessageComponentSerializer(MiniMessage.miniMessage()))
             .setNameFormatter(NameFormatters.IDENTITY)
@@ -30,7 +30,6 @@ public class ConfigFeature implements PluginFeature {
         MessagesConfig.setInstance(
                 loadConfig(MessagesConfig.class, "messages.yml")
         );
-        // ToDo: Include your config here, examples are above
         Log.info("✓ Config reloaded.");
     }
 
@@ -39,7 +38,7 @@ public class ConfigFeature implements PluginFeature {
     }
 
     @Override
-    public void onLoad(TemplatePlugin plugin) {
+    public void onLoad(JarticlePlugin plugin) {
         loadConfig();
     }
 

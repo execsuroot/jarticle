@@ -1,4 +1,4 @@
-package tech.execsuroot.template.config;
+package tech.execsuroot.jarticle.config;
 
 import de.exlll.configlib.Configuration;
 import lombok.Getter;
@@ -20,7 +20,4 @@ public class MainConfig {
     @Getter
     @Setter
     private static MainConfig instance;
-
-    // ToDo: Include your general config options here
-    private String example;
 }
