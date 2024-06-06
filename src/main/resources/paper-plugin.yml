@@ -1,0 +1,7 @@
+name: "${project_name}"
+version: "${project_version}"
+description: "${project_description}"
+main: "tech.execsuroot.template.TemplatePlugin" # ToDo: Change to updated main class
+author: "execsuroot" # ToDo: Change to your name
+website: "execsuroot.tech" # ToDo: Change to your website
+api-version: "1.20" # ToDo: Change to your target API version
