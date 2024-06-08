@@ -27,7 +27,9 @@ dependencies {
     compileOnly("org.projectlombok", "lombok", lombokVersion)
     annotationProcessor("org.projectlombok", "lombok", lombokVersion)
     // Config
-    implementation("de.exlll", "configlib-yaml", "4.5.0")
+    val configVersion = "4.5.0"
+    implementation("de.exlll", "configlib-yaml", configVersion)
+    implementation("de.exlll", "configlib-paper", configVersion)
     // Command
     val commandVersion = "9.4.2"
     implementation("dev.jorel", "commandapi-bukkit-shade-mojang-mapped", commandVersion)

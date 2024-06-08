@@ -1,5 +1,6 @@
 package tech.execsuroot.jarticle.config;
 
+import de.exlll.configlib.ConfigLib;
 import de.exlll.configlib.NameFormatters;
 import de.exlll.configlib.YamlConfigurationProperties;
 import de.exlll.configlib.YamlConfigurations;
@@ -18,7 +19,7 @@ import java.nio.file.Path;
 public class ConfigFeature implements PluginFeature {
 
     private final Path configFolder = JarticlePlugin.getInstance().getDataFolder().toPath();
-    private final YamlConfigurationProperties yamlProperties = YamlConfigurationProperties.newBuilder()
+    private final YamlConfigurationProperties yamlProperties = ConfigLib.BUKKIT_DEFAULT_PROPERTIES.toBuilder()
             .addSerializer(Component.class, new MiniMessageComponentSerializer(MiniMessage.miniMessage()))
             .setNameFormatter(NameFormatters.IDENTITY)
             .build();
