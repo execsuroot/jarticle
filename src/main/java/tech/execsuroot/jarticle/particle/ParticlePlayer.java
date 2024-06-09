@@ -1,7 +1,6 @@
 package tech.execsuroot.jarticle.particle;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -9,12 +8,19 @@ import org.bukkit.util.Vector;
 
 import java.util.Optional;
 
-@RequiredArgsConstructor
 public class ParticlePlayer {
 
     private final ParticleData data;
+    private final Object particleData;
 
-    public void playTick(Location location) {
+    public ParticlePlayer(ParticleData data) {
+        this.data = data;
+        this.particleData = Optional.of(data.getData())
+                .map((string) -> stringToData(string, data.getType().getDataType()))
+                .orElse(null);
+    }
+
+    public void play(Location location) {
         Vector offset = data.getOffset();
         location.getWorld().spawnParticle(
                 data.getType(),
@@ -22,9 +28,7 @@ public class ParticlePlayer {
                 data.getAmount(),
                 offset.getX(), offset.getY(), offset.getZ(),
                 data.getSpeed(),
-                Optional.of(data.getData())
-                        .map((string) -> stringToData(string, data.getType().getDataType()))
-                        .orElse(null)
+                particleData
         );
     }
 

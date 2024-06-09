@@ -2,35 +2,32 @@ package tech.execsuroot.jarticle.particle;
 
 import org.bukkit.Location;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnimationPlayer {
 
-    private final List<FramePlayer> frames;
-    private int repeatLeft;
-    private int tick = 0;
+    private final List<FramePlayer> relativeFrames;
+    private final List<FramePlayer> absoluteFrames;
+    private int
 
     public AnimationPlayer(AnimationData data) {
-        this.frames = data.getFrames().stream().map(FramePlayer::new).toList();
-        if (data.getRepeat() == AnimationData.INFINITE_REPEAT) {
-            this.repeatLeft = Integer.MAX_VALUE;
-        } else {
-            this.repeatLeft = data.getRepeat();
+        this.relativeFrames = new ArrayList<>();
+        this.absoluteFrames = new ArrayList<>();
+        for (FrameData frame : data.getFrames()) {
+            if (frame.isAbsolute()) {
+                absoluteFrames.add(new FramePlayer(frame));
+            } else {
+                relativeFrames.add(new FramePlayer(frame));
+            }
         }
     }
 
-    public void playTick(Location location) {
-        if (repeatLeft == 0) return;
-        tick++;
-        boolean hasEnded = true;
-        for (FramePlayer frame : frames) {
-            if (frame.hasEnded(tick)) continue;
-            frame.playTick(location, tick);
-            hasEnded = false;
-        }
-        if (hasEnded) {
-            repeatLeft--;
-            tick = 0;
-        }
+    /**
+     * Plays a tick of the animation at the given location.
+     * @return {@code true} if should continue playing, {@code false} if the animation is done.
+     */
+    public boolean playTick(Location location) {
+        
     }
 }
