@@ -33,6 +33,30 @@ public class MessagesConfig {
     private Component configReloaded = MiniMessage.miniMessage().deserialize(
             "<green>Configuration reloaded in <white>{duration}</white> ms."
     );
+    private Component elytraWithIdNotFound = MiniMessage.miniMessage().deserialize(
+            "<red>Elytra with ID <white>{id}</white> not found."
+    );
+    private Component elytraAddedToYourInventory = MiniMessage.miniMessage().deserialize(
+            "<green>Elytra <white>{id}</white> added to your inventory."
+    );
+
+    public Component getElytraAddedToYourInventory(String id) {
+        Component original = this.elytraAddedToYourInventory;
+        TextReplacementConfig replacement = TextReplacementConfig.builder()
+                .matchLiteral("{id}")
+                .replacement(id)
+                .build();
+        return original.replaceText(replacement);
+    }
+
+    public Component getElytraWithIdNotFound(String id) {
+        Component original = this.elytraWithIdNotFound;
+        TextReplacementConfig replacement = TextReplacementConfig.builder()
+                .matchLiteral("{id}")
+                .replacement(id)
+                .build();
+        return original.replaceText(replacement);
+    }
 
     public Component getConfigReloaded(Long duration) {
         Component original = this.configReloaded;

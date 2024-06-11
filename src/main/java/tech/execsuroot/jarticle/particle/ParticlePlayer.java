@@ -15,16 +15,21 @@ public class ParticlePlayer {
 
     public ParticlePlayer(ParticleData data) {
         this.data = data;
-        this.particleData = Optional.of(data.getData())
+        this.particleData = Optional.ofNullable(data.getData())
                 .map((string) -> stringToData(string, data.getType().getDataType()))
                 .orElse(null);
     }
 
     public void play(Location location) {
-        Vector offset = data.getOffset();
+        ParticlePosition position = data.getPosition();
+        ParticlePosition offset = data.getOffset();
+        Vector direction = location.getDirection();
+        double x = location.getX() + position.getX() * direction.getX();
+        double z = location.getZ() + position.getZ() * direction.getZ();
+        double y = location.getY() + position.getY();
         location.getWorld().spawnParticle(
                 data.getType(),
-                location.clone().add(data.getPosition()),
+                x, y, z,
                 data.getAmount(),
                 offset.getX(), offset.getY(), offset.getZ(),
                 data.getSpeed(),

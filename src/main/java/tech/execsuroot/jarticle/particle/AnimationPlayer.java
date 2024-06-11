@@ -9,9 +9,11 @@ public class AnimationPlayer {
 
     private final List<FramePlayer> relativeFrames;
     private final List<FramePlayer> absoluteFrames;
-    private int
+    private int repeat;
+    private int frameIndex = 0;
 
     public AnimationPlayer(AnimationData data) {
+        this.repeat = data.getRepeat();
         this.relativeFrames = new ArrayList<>();
         this.absoluteFrames = new ArrayList<>();
         for (FrameData frame : data.getFrames()) {
@@ -28,6 +30,24 @@ public class AnimationPlayer {
      * @return {@code true} if should continue playing, {@code false} if the animation is done.
      */
     public boolean playTick(Location location) {
-        
+        FramePlayer relativeFrame = relativeFrames.get(frameIndex);
+        boolean shouldContinuePlayingFrame = relativeFrame.playTick(location);
+        for (FramePlayer absoluteFrame : absoluteFrames) {
+            absoluteFrame.playTick(location);
+        }
+        if (!shouldContinuePlayingFrame) {
+            boolean isLastFrame = relativeFrame == relativeFrames.getLast();
+            if (isLastFrame) {
+                frameIndex = 0;
+                if (repeat != AnimationData.INFINITE_REPEAT) repeat--;
+                reset();
+            } else frameIndex++;
+        }
+        return repeat == AnimationData.INFINITE_REPEAT || repeat > 0;
+    }
+
+    private void reset() {
+        for (FramePlayer relativeFrame : relativeFrames) relativeFrame.reset();
+        for (FramePlayer absoluteFrame : absoluteFrames) absoluteFrame.reset();
     }
 }
