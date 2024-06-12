@@ -14,6 +14,6 @@ public class ParticleData {
     private ParticlePosition offset = ParticlePosition.ZERO;
     private Particle type;
     private int amount = 1;
-    private double speed = 1.0;
+    private double speed = 0;
     private String data = null;
 }

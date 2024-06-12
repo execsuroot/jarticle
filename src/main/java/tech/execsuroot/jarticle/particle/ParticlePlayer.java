@@ -23,9 +23,10 @@ public class ParticlePlayer {
     public void play(Location location) {
         ParticlePosition position = data.getPosition();
         ParticlePosition offset = data.getOffset();
-        Vector direction = location.getDirection();
-        double x = location.getX() + position.getX() * direction.getX();
-        double z = location.getZ() + position.getZ() * direction.getZ();
+        Vector direction = location.getDirection().setY(0).normalize();
+        Vector right = direction.getCrossProduct(new Vector(0, 1, 0));
+        double x = location.getX() + position.getX() * direction.getX() - position.getZ() * right.getX();
+        double z = location.getZ() + position.getX() * direction.getZ() - position.getZ() * right.getZ();
         double y = location.getY() + position.getY();
         location.getWorld().spawnParticle(
                 data.getType(),

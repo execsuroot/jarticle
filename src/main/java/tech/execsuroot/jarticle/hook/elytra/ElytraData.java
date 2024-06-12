@@ -1,4 +1,4 @@
-package tech.execsuroot.jarticle.elytra;
+package tech.execsuroot.jarticle.hook.elytra;
 
 import de.exlll.configlib.Configuration;
 import lombok.Getter;

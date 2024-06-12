@@ -2,12 +2,13 @@ package tech.execsuroot.jarticle.config;
 
 import de.exlll.configlib.Comment;
 import de.exlll.configlib.Configuration;
+import de.exlll.configlib.Ignore;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Particle;
-import tech.execsuroot.jarticle.elytra.ElytraData;
+import tech.execsuroot.jarticle.hook.elytra.ElytraData;
 import tech.execsuroot.jarticle.particle.AnimationData;
 import tech.execsuroot.jarticle.particle.FrameData;
 import tech.execsuroot.jarticle.particle.ParticleData;
@@ -37,7 +38,18 @@ public class MainConfig {
     private Map<String, AnimationData> animations = Map.of(
             "flame-trail", flameTrailAnimation()
     );
-    @Comment("Animated elytra declarations.")
+    @Comment({
+            "Permission animations.",
+            "The key is the permission, the value is the animation to use.",
+            "This will always play an animation for a player with the permission."
+    })
+    private Map<String, String> permissions = Map.of(
+            "jarticle.fire-wings", "flame-trail"
+    );
+    @Comment({
+            "Elytra animations.",
+            "This will play animation during the elytra flight.",
+    })
     private Map<String, ElytraData> elytras = Map.of(
             "fire-wings", fireWingsElytraData()
     );

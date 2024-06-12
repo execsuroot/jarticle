@@ -4,10 +4,10 @@ import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import tech.execsuroot.jarticle.command.CommandFeature;
 import tech.execsuroot.jarticle.config.ConfigFeature;
-import tech.execsuroot.jarticle.elytra.ElytraFeature;
 import tech.execsuroot.jarticle.feature.FeatureManager;
 import tech.execsuroot.jarticle.feature.FeatureManagerImpl;
 import tech.execsuroot.jarticle.feature.PluginFeature;
+import tech.execsuroot.jarticle.hook.HookFeature;
 import tech.execsuroot.jarticle.util.Log;
 
 /**
@@ -39,7 +39,7 @@ public class JarticlePlugin extends JavaPlugin {
         return new PluginFeature[]{
                 new CommandFeature(),
                 new ConfigFeature(),
-                new ElytraFeature()
+                new HookFeature()
         };
     }
 

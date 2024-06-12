@@ -12,7 +12,7 @@ import tech.execsuroot.jarticle.JarticlePlugin;
 import tech.execsuroot.jarticle.config.ConfigFeature;
 import tech.execsuroot.jarticle.config.MainConfig;
 import tech.execsuroot.jarticle.config.MessagesConfig;
-import tech.execsuroot.jarticle.elytra.ElytraData;
+import tech.execsuroot.jarticle.hook.elytra.ElytraData;
 import tech.execsuroot.jarticle.feature.FeatureManager;
 
 import java.util.List;

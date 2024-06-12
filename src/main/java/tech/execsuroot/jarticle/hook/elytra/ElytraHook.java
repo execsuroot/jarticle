@@ -1,17 +1,16 @@
-package tech.execsuroot.jarticle.elytra;
+package tech.execsuroot.jarticle.hook.elytra;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import lombok.NonNull;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import tech.execsuroot.jarticle.config.ConfigReloadEvent;
 import tech.execsuroot.jarticle.config.MainConfig;
+import tech.execsuroot.jarticle.hook.BaseHook;
 import tech.execsuroot.jarticle.particle.AnimationData;
 import tech.execsuroot.jarticle.particle.AnimationPlayer;
 import tech.execsuroot.jarticle.util.Log;
@@ -19,18 +18,13 @@ import tech.execsuroot.jarticle.util.Log;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ElytraManager implements Listener {
+public class ElytraHook extends BaseHook {
 
-    private final Map<Integer, ElytraData> customModelDataToElytraData = new ConcurrentHashMap<>();
-    private final Map<Player, AnimationPlayer> ongoingAnimations = new ConcurrentHashMap<>();
+    private final Map<Integer, ElytraData> elytraDataByCustomModel = new ConcurrentHashMap<>();
 
-    @EventHandler
+    @Override
     public void tickOngoingAnimations(ServerTickEndEvent event) {
-        for (Map.Entry<Player, AnimationPlayer> entry : ongoingAnimations.entrySet()) {
-            Player player = entry.getKey();
-            AnimationPlayer animationPlayer = entry.getValue();
-            animationPlayer.playTick(player.getLocation());
-        }
+        super.tickOngoingAnimations(event);
     }
 
     @EventHandler
@@ -54,34 +48,30 @@ public class ElytraManager implements Listener {
             Log.warn("Animation not found: " + elytraData.getAnimation());
             return;
         }
-        AnimationPlayer playerAnimation = new AnimationPlayer(animationData);
-        ongoingAnimations.put(player, playerAnimation);
-    }
-
-    private void onPlayerStopGlide(Player player) {
-        // ongoingAnimations.remove(player);
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        ongoingAnimations.remove(event.getPlayer());
-    }
-
-    @EventHandler
-    public void onConfigReload(ConfigReloadEvent event) {
-        refreshCache();
-    }
-
-    public void refreshCache() {
-        customModelDataToElytraData.clear();
-        for (ElytraData elytraData : MainConfig.getInstance().getElytras().values()) {
-            customModelDataToElytraData.put(elytraData.getCustomModelData(), elytraData);
-        }
+        AnimationPlayer animation = new AnimationPlayer(animationData);
+        startAnimation(player, animation);
     }
 
     private ElytraData getElytraData(@NonNull ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return null;
-        return meta.hasCustomModelData() ? customModelDataToElytraData.get(meta.getCustomModelData()) : null;
+        return meta.hasCustomModelData() ? elytraDataByCustomModel.get(meta.getCustomModelData()) : null;
+    }
+
+    private void onPlayerStopGlide(Player player) {
+        stopAnimation(player);
+    }
+
+    @EventHandler
+    public void onConfigReload(ConfigReloadEvent event) {
+        elytraDataByCustomModel.clear();
+        for (ElytraData elytraData : MainConfig.getInstance().getElytras().values()) {
+            elytraDataByCustomModel.put(elytraData.getCustomModelData(), elytraData);
+        }
+    }
+
+    @Override
+    protected boolean shouldContinueAnimation(Player player) {
+        return player.isGliding();
     }
 }
