@@ -1,12 +1,14 @@
 package tech.execsuroot.jarticle.particle;
 
 import de.exlll.configlib.Configuration;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.bukkit.Particle;
 
+@Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Configuration
 public class ParticleData {
 

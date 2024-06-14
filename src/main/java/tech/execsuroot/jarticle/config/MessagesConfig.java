@@ -39,6 +39,30 @@ public class MessagesConfig {
     private Component elytraAddedToYourInventory = MiniMessage.miniMessage().deserialize(
             "<green>Elytra <white>{id}</white> added to your inventory."
     );
+    private Component bowWithIdNotFound = MiniMessage.miniMessage().deserialize(
+            "<red>Bow with ID <white>{id}</white> not found."
+    );
+    private Component bowAddedToYourInventory = MiniMessage.miniMessage().deserialize(
+            "<green>Bow <white>{id}</white> added to your inventory."
+    );
+
+    public Component getBowAddedToYourInventory(String id) {
+        Component original = this.bowAddedToYourInventory;
+        TextReplacementConfig replacement = TextReplacementConfig.builder()
+                .matchLiteral("{id}")
+                .replacement(id)
+                .build();
+        return original.replaceText(replacement);
+    }
+
+    public Component getBowWithIdNotFound(String id) {
+        Component original = this.bowWithIdNotFound;
+        TextReplacementConfig replacement = TextReplacementConfig.builder()
+                .matchLiteral("{id}")
+                .replacement(id)
+                .build();
+        return original.replaceText(replacement);
+    }
 
     public Component getElytraAddedToYourInventory(String id) {
         Component original = this.elytraAddedToYourInventory;

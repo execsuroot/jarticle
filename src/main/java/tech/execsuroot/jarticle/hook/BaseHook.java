@@ -1,7 +1,7 @@
 package tech.execsuroot.jarticle.hook;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
-import org.bukkit.entity.Player;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import tech.execsuroot.jarticle.particle.AnimationPlayer;
 
@@ -9,34 +9,39 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class BaseHook implements Hook {
+public abstract class BaseHook<T> implements Hook {
 
-    private final Map<Player, AnimationPlayer> ongoingAnimations = new ConcurrentHashMap<>();
+    private final Map<T, AnimationPlayer> ongoingAnimations = new ConcurrentHashMap<>();
 
-    protected void startAnimation(Player player, AnimationPlayer animation) {
-        ongoingAnimations.put(player, animation);
+    @Override
+    public void onEnable() {
+        // Empty by default for hooks that don't need to do anything on enable
     }
 
-    protected void stopAnimation(Player player) {
-        ongoingAnimations.remove(player);
+    protected void startAnimation(T key, AnimationPlayer animation) {
+        ongoingAnimations.put(key, animation);
     }
 
+    protected void stopAnimation(T key) {
+        ongoingAnimations.remove(key);
+    }
+
+    /**
+     * Should override in order for the listener to be registered
+     */
     @EventHandler
     public void tickOngoingAnimations(ServerTickEndEvent event) {
-        Iterator<Map.Entry<Player, AnimationPlayer>> iterator = ongoingAnimations.entrySet().iterator();
+        Iterator<Map.Entry<T, AnimationPlayer>> iterator = ongoingAnimations.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<Player, AnimationPlayer> entry = iterator.next();
-            Player player = entry.getKey();
+            Map.Entry<T, AnimationPlayer> entry = iterator.next();
+            T key = entry.getKey();
             AnimationPlayer animation = entry.getValue();
-            if (player.isOnline() && shouldContinueAnimation(player)) {
-                animation.playTick(player.getLocation());
-            } else {
-                iterator.remove();
-            }
+            boolean shouldContinue = shouldContinueAnimationFor(key) && animation.playTick(getAnimationLocation(key));
+            if (!shouldContinue) iterator.remove();
         }
     }
 
-    protected boolean shouldContinueAnimation(Player player) {
-        return true;
-    }
+    protected abstract boolean shouldContinueAnimationFor(T key);
+
+    protected abstract Location getAnimationLocation(T key);
 }

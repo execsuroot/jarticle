@@ -1,4 +1,4 @@
-package tech.execsuroot.jarticle.hook.elytra;
+package tech.execsuroot.jarticle.hook.bow;
 
 import de.exlll.configlib.Configuration;
 import lombok.*;
@@ -10,7 +10,7 @@ import net.kyori.adventure.text.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 @Configuration
-public class ElytraData {
+public class BowData {
 
     private Component name;
     private Component lore;

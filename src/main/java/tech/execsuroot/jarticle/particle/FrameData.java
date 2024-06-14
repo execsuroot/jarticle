@@ -1,13 +1,15 @@
 package tech.execsuroot.jarticle.particle;
 
 import de.exlll.configlib.Configuration;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Configuration
 public class FrameData {
 

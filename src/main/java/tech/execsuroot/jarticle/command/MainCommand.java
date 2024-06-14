@@ -12,6 +12,7 @@ import tech.execsuroot.jarticle.JarticlePlugin;
 import tech.execsuroot.jarticle.config.ConfigFeature;
 import tech.execsuroot.jarticle.config.MainConfig;
 import tech.execsuroot.jarticle.config.MessagesConfig;
+import tech.execsuroot.jarticle.hook.bow.BowData;
 import tech.execsuroot.jarticle.hook.elytra.ElytraData;
 import tech.execsuroot.jarticle.feature.FeatureManager;
 
@@ -60,12 +61,35 @@ public class MainCommand {
                 sender.sendMessage(MessagesConfig.getInstance().getElytraAddedToYourInventory(id));
             });
 
+    private static final CommandAPICommand bow = new CommandAPICommand("bow")
+            .withPermission("jarticle.bow")
+            .withArguments(List.of(
+                    new StringArgument("id")
+                            .replaceSuggestions(ArgumentSuggestions.stringCollection((sender) -> MainConfig.getInstance().getBows().keySet()))
+            ))
+            .executesPlayer((sender, args) -> {
+                String id = args.getByClass(0, String.class);
+                BowData bowData = MainConfig.getInstance().getBows().get(id);
+                if (bowData == null) {
+                    sender.sendMessage(MessagesConfig.getInstance().getBowWithIdNotFound(id));
+                    return;
+                }
+                ItemStack bow = new ItemStack(Material.BOW);
+                ItemMeta bowMeta = bow.getItemMeta();
+                bowMeta.displayName(bowData.getName());
+                bowMeta.lore(List.of(bowData.getLore()));
+                bowMeta.setCustomModelData(bowData.getCustomModelData());
+                bow.setItemMeta(bowMeta);
+                sender.getInventory().addItem(bow);
+                sender.sendMessage(MessagesConfig.getInstance().getBowAddedToYourInventory(id));
+            });
+
     private static final CommandAPICommand root = new CommandAPICommand("jarticle")
             .withPermission("jarticle")
             .executes((sender, args) -> {
                 sender.sendMessage(MessagesConfig.getInstance().getMainCommandHelp());
             })
-            .withSubcommands(reload, elytra);
+            .withSubcommands(reload, elytra, bow);
 
     public static void register(JarticlePlugin plugin) {
         root.register(plugin);

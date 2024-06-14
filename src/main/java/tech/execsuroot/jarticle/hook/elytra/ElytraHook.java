@@ -2,6 +2,7 @@ package tech.execsuroot.jarticle.hook.elytra;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import lombok.NonNull;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,10 +19,16 @@ import tech.execsuroot.jarticle.util.Log;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ElytraHook extends BaseHook {
+public class ElytraHook extends BaseHook<Player> {
 
     private final Map<Integer, ElytraData> elytraDataByCustomModel = new ConcurrentHashMap<>();
 
+    @Override
+    public void onEnable() {
+        cacheElytraData();
+    }
+
+    // Should override in order for the listener to be registered
     @Override
     public void tickOngoingAnimations(ServerTickEndEvent event) {
         super.tickOngoingAnimations(event);
@@ -64,14 +71,23 @@ public class ElytraHook extends BaseHook {
 
     @EventHandler
     public void onConfigReload(ConfigReloadEvent event) {
+        cacheElytraData();
+    }
+
+    private void cacheElytraData() {
         elytraDataByCustomModel.clear();
-        for (ElytraData elytraData : MainConfig.getInstance().getElytras().values()) {
-            elytraDataByCustomModel.put(elytraData.getCustomModelData(), elytraData);
-        }
+        MainConfig.getInstance().getElytras().forEach((key, data) -> {
+            elytraDataByCustomModel.put(data.getCustomModelData(), data);
+        });
     }
 
     @Override
-    protected boolean shouldContinueAnimation(Player player) {
-        return player.isGliding();
+    protected boolean shouldContinueAnimationFor(Player key) {
+        return key.isOnline() && key.isGliding();
+    }
+
+    @Override
+    protected Location getAnimationLocation(Player key) {
+        return key.getLocation();
     }
 }

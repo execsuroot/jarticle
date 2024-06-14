@@ -2,12 +2,12 @@ package tech.execsuroot.jarticle.config;
 
 import de.exlll.configlib.Comment;
 import de.exlll.configlib.Configuration;
-import de.exlll.configlib.Ignore;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Particle;
+import tech.execsuroot.jarticle.hook.bow.BowData;
 import tech.execsuroot.jarticle.hook.elytra.ElytraData;
 import tech.execsuroot.jarticle.particle.AnimationData;
 import tech.execsuroot.jarticle.particle.FrameData;
@@ -36,7 +36,26 @@ public class MainConfig {
 
     @Comment("Animation declarations to use in other parts of the configuration.")
     private Map<String, AnimationData> animations = Map.of(
-            "flame-trail", flameTrailAnimation()
+            "flame-trail", AnimationData.builder()
+                    .frames(List.of(
+                            FrameData.builder()
+                                    .particles(List.of(
+                                            ParticleData.builder()
+                                                    .type(Particle.FLAME)
+                                                    .build()
+                                    ))
+                                    .duration(20)
+                                    .build(),
+                            FrameData.builder()
+                                    .particles(List.of(
+                                            ParticleData.builder()
+                                                    .type(Particle.SOUL_FIRE_FLAME)
+                                                    .build()
+                                    ))
+                                    .duration(20)
+                                    .build()
+                    ))
+                    .build()
     );
     @Comment({
             "Permission animations.",
@@ -51,38 +70,23 @@ public class MainConfig {
             "This will play animation during the elytra flight.",
     })
     private Map<String, ElytraData> elytras = Map.of(
-            "fire-wings", fireWingsElytraData()
+            "fire-wings", ElytraData.builder()
+                    .name(Component.text("Flame Wings").color(NamedTextColor.RED))
+                    .lore(Component.text("These wings are on fire!").color(NamedTextColor.GOLD))
+                    .customModelData(29001)
+                    .animation("flame-trail")
+                    .build()
     );
-
-    private static ElytraData fireWingsElytraData() {
-        ElytraData data = new ElytraData();
-        data.setName(Component.text("Flame Wings").color(NamedTextColor.RED));
-        data.setLore(Component.text("These wings are on fire!").color(NamedTextColor.GOLD));
-        data.setCustomModelData(29001);
-        data.setAnimation("flame-trail");
-        return data;
-    }
-
-    private static AnimationData flameTrailAnimation() {
-        AnimationData animation = new AnimationData();
-        List<FrameData> frames = new ArrayList<>();
-        animation.setFrames(frames);
-
-        ParticleData flameParticle = new ParticleData();
-        flameParticle.setType(Particle.FLAME);
-        ParticleData soulFlameParticle = new ParticleData();
-        soulFlameParticle.setType(Particle.SOUL_FIRE_FLAME);
-
-        FrameData flameFrame = new FrameData();
-        flameFrame.setParticles(List.of(flameParticle));
-        flameFrame.setDuration(20);
-        frames.add(flameFrame);
-
-        FrameData soulFlameFrame = new FrameData();
-        soulFlameFrame.setParticles(List.of(soulFlameParticle));
-        soulFlameFrame.setDuration(20);
-        frames.add(soulFlameFrame);
-
-        return animation;
-    }
+    @Comment({
+            "Bow animations.",
+            "This will play animation for the arrow shot by the bow.",
+    })
+    private Map<String, BowData> bows = Map.of(
+            "fire-bow", BowData.builder()
+                    .name(Component.text("Fire Bow").color(NamedTextColor.RED))
+                    .lore(Component.text("This bow is on fire!").color(NamedTextColor.GOLD))
+                    .customModelData(29001)
+                    .animation("flame-trail")
+                    .build()
+    );
 }

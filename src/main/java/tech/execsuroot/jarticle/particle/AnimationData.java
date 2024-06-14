@@ -1,13 +1,15 @@
 package tech.execsuroot.jarticle.particle;
 
 import de.exlll.configlib.Configuration;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Configuration
 public class AnimationData {
 
