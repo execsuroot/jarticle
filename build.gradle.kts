@@ -32,8 +32,6 @@ dependencies {
     // Command
     val commandVersion = "9.4.2"
     implementation("dev.jorel", "commandapi-bukkit-shade-mojang-mapped", commandVersion)
-    compileOnly("dev.jorel", "commandapi-annotations", commandVersion)
-    annotationProcessor("dev.jorel", "commandapi-annotations", commandVersion)
 }
 
 // Setting Java version to 21
