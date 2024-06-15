@@ -64,13 +64,6 @@ tasks {
         )
     }
 
-    shadowJar {
-        relocate("de.exlll.configlib", "${project.group}.exlll.configlib")
-        relocate("org.snakeyaml", "${project.group}.snakeyaml")
-        relocate("dev.jorel.commandapi", "${project.group}.jorel.commandapi")
-        mergeServiceFiles()
-    }
-
     // Relocating dependencies to avoid conflicts with other plugins
     create<ShadowJar>("relocatedShadowJar") {
         group = "shadow"
