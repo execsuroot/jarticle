@@ -1,12 +1,12 @@
 package tech.execsuroot.jarticle.hook.bow;
 
-import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import tech.execsuroot.jarticle.config.ConfigReloadEvent;
 import tech.execsuroot.jarticle.config.MainConfig;
 import tech.execsuroot.jarticle.hook.BaseHook;
@@ -17,19 +17,17 @@ import tech.execsuroot.jarticle.util.Log;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Hook that starts animation for arrows shot from bows.
+ */
 public class BowHook extends BaseHook<Entity> {
 
-    private final Map<Integer, BowData> bowDataByCustomModel = new ConcurrentHashMap<>();
+    private final Map<Integer, BowData> dataByCustomModel = new ConcurrentHashMap<>();
 
     @Override
-    public void onEnable() {
+    public void register(Plugin plugin) {
         cacheBowData();
-    }
-
-    // Should override in order for the listener to be registered
-    @Override
-    public void tickOngoingAnimations(ServerTickEndEvent event) {
-        super.tickOngoingAnimations(event);
+        super.register(plugin);
     }
 
     @EventHandler
@@ -37,9 +35,7 @@ public class BowHook extends BaseHook<Entity> {
         Entity projectile = event.getProjectile();
         ItemStack bow = event.getBow();
         if (bow == null) return;
-        ItemMeta meta = bow.getItemMeta();
-        if (!meta.hasCustomModelData()) return;
-        BowData data = bowDataByCustomModel.get(meta.getCustomModelData());
+        BowData data = getBowData(bow);
         if (data == null) return;
         AnimationData animationData = MainConfig.getInstance().getAnimations().get(data.getAnimation());
         if (animationData == null) {
@@ -49,15 +45,21 @@ public class BowHook extends BaseHook<Entity> {
         startAnimation(projectile, new AnimationPlayer(animationData));
     }
 
+    private BowData getBowData(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return null;
+        return meta.hasCustomModelData() ? dataByCustomModel.get(meta.getCustomModelData()) : null;
+    }
+
     @EventHandler
     public void onConfigReload(ConfigReloadEvent event) {
         cacheBowData();
     }
 
     private void cacheBowData() {
-        bowDataByCustomModel.clear();
+        dataByCustomModel.clear();
         MainConfig.getInstance().getBows().forEach((key, data) -> {
-            bowDataByCustomModel.put(data.getCustomModelData(), data);
+            dataByCustomModel.put(data.getCustomModelData(), data);
         });
     }
 

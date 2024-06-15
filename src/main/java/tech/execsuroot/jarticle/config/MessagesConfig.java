@@ -45,6 +45,12 @@ public class MessagesConfig {
     private Component bowAddedToYourInventory = MiniMessage.miniMessage().deserialize(
             "<green>Bow <white>{id}</white> added to your inventory."
     );
+    private Component configAutoReloadEnabled = MiniMessage.miniMessage().deserialize(
+            "<green>Configuration auto-reload enabled."
+    );
+    private Component configAutoReloadDisabled = MiniMessage.miniMessage().deserialize(
+            "<red>Configuration auto-reload disabled."
+    );
 
     public Component getBowAddedToYourInventory(String id) {
         Component original = this.bowAddedToYourInventory;

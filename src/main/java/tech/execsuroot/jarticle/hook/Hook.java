@@ -1,8 +1,10 @@
 package tech.execsuroot.jarticle.hook;
 
-import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
-public interface Hook extends Listener {
+public interface Hook {
 
-    void onEnable();
+    void register(Plugin plugin);
+
+    void unregister();
 }

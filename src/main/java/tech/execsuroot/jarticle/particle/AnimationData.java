@@ -16,5 +16,6 @@ public class AnimationData {
     public static final int INFINITE_REPEAT = -1;
 
     private List<FrameData> frames;
+    @Builder.Default
     private int repeat = INFINITE_REPEAT;
 }

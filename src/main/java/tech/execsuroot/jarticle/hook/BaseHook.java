@@ -3,20 +3,18 @@ package tech.execsuroot.jarticle.hook;
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import tech.execsuroot.jarticle.particle.AnimationPlayer;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class BaseHook<T> implements Hook {
+public abstract class BaseHook<T> implements Hook, Listener {
 
-    private final Map<T, AnimationPlayer> ongoingAnimations = new ConcurrentHashMap<>();
-
-    @Override
-    public void onEnable() {
-        // Empty by default for hooks that don't need to do anything on enable
-    }
+    protected final Map<T, AnimationPlayer> ongoingAnimations = new ConcurrentHashMap<>();
 
     protected void startAnimation(T key, AnimationPlayer animation) {
         ongoingAnimations.put(key, animation);
@@ -26,9 +24,6 @@ public abstract class BaseHook<T> implements Hook {
         ongoingAnimations.remove(key);
     }
 
-    /**
-     * Should override in order for the listener to be registered
-     */
     @EventHandler
     public void tickOngoingAnimations(ServerTickEndEvent event) {
         Iterator<Map.Entry<T, AnimationPlayer>> iterator = ongoingAnimations.entrySet().iterator();
@@ -44,4 +39,14 @@ public abstract class BaseHook<T> implements Hook {
     protected abstract boolean shouldContinueAnimationFor(T key);
 
     protected abstract Location getAnimationLocation(T key);
+
+    @Override
+    public void register(Plugin plugin) {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    @Override
+    public void unregister() {
+        HandlerList.unregisterAll(this);
+    }
 }

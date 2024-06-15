@@ -36,7 +36,22 @@ public class MainCommand {
                 Long endTimestamp = System.currentTimeMillis();
                 Long duration = endTimestamp - startTimestamp;
                 sender.sendMessage(MessagesConfig.getInstance().getConfigReloaded(duration));
-            });
+            })
+            .withSubcommands(
+                    new CommandAPICommand("auto")
+                            .withPermission("jarticle.reload.auto")
+                            .executes((sender, args) -> {
+                                JarticlePlugin plugin = JarticlePlugin.getInstance();
+                                FeatureManager featureManager = plugin.getFeatureManager();
+                                ConfigFeature configFeature = featureManager.getFeature(ConfigFeature.class).orElseThrow();
+                                boolean isAutoReloadEnabled = configFeature.switchAutoReload();
+                                if (isAutoReloadEnabled) {
+                                    sender.sendMessage(MessagesConfig.getInstance().getConfigAutoReloadEnabled());
+                                } else {
+                                    sender.sendMessage(MessagesConfig.getInstance().getConfigAutoReloadDisabled());
+                                }
+                            })
+            );
 
     private static final CommandAPICommand elytra = new CommandAPICommand("elytra")
             .withPermission("jarticle.elytra")

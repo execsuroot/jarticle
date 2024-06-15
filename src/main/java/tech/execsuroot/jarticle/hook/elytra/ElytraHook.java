@@ -1,6 +1,5 @@
 package tech.execsuroot.jarticle.hook.elytra;
 
-import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import lombok.NonNull;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import tech.execsuroot.jarticle.config.ConfigReloadEvent;
 import tech.execsuroot.jarticle.config.MainConfig;
 import tech.execsuroot.jarticle.hook.BaseHook;
@@ -19,19 +19,17 @@ import tech.execsuroot.jarticle.util.Log;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Hook that starts animation for players gliding on elytra.
+ */
 public class ElytraHook extends BaseHook<Player> {
 
-    private final Map<Integer, ElytraData> elytraDataByCustomModel = new ConcurrentHashMap<>();
+    private final Map<Integer, ElytraData> dataByCustomModel = new ConcurrentHashMap<>();
 
     @Override
-    public void onEnable() {
+    public void register(Plugin plugin) {
         cacheElytraData();
-    }
-
-    // Should override in order for the listener to be registered
-    @Override
-    public void tickOngoingAnimations(ServerTickEndEvent event) {
-        super.tickOngoingAnimations(event);
+        super.register(plugin);
     }
 
     @EventHandler
@@ -62,7 +60,7 @@ public class ElytraHook extends BaseHook<Player> {
     private ElytraData getElytraData(@NonNull ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return null;
-        return meta.hasCustomModelData() ? elytraDataByCustomModel.get(meta.getCustomModelData()) : null;
+        return meta.hasCustomModelData() ? dataByCustomModel.get(meta.getCustomModelData()) : null;
     }
 
     private void onPlayerStopGlide(Player player) {
@@ -75,9 +73,9 @@ public class ElytraHook extends BaseHook<Player> {
     }
 
     private void cacheElytraData() {
-        elytraDataByCustomModel.clear();
+        dataByCustomModel.clear();
         MainConfig.getInstance().getElytras().forEach((key, data) -> {
-            elytraDataByCustomModel.put(data.getCustomModelData(), data);
+            dataByCustomModel.put(data.getCustomModelData(), data);
         });
     }
 

@@ -12,10 +12,14 @@ import org.bukkit.Particle;
 @Configuration
 public class ParticleData {
 
+    @Builder.Default
     private ParticlePosition position = ParticlePosition.ZERO;
+    @Builder.Default
     private ParticlePosition offset = ParticlePosition.ZERO;
     private Particle type;
+    @Builder.Default
     private int amount = 1;
+    @Builder.Default
     private double speed = 0;
-    private String data = null;
+    private String data;
 }

@@ -12,6 +12,7 @@ public class ConfigReloadEvent extends Event {
     private static final HandlerList handlerList = new HandlerList();
 
     private ConfigReloadEvent() {
+        super(true);
     }
 
     @Override

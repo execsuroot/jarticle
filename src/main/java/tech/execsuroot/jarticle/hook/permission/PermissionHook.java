@@ -1,22 +1,28 @@
 package tech.execsuroot.jarticle.hook.permission;
 
-import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
+import tech.execsuroot.jarticle.config.ConfigReloadEvent;
 import tech.execsuroot.jarticle.config.MainConfig;
 import tech.execsuroot.jarticle.hook.BaseHook;
 import tech.execsuroot.jarticle.particle.AnimationPlayer;
 
+import java.util.List;
 import java.util.Map;
 
+/**
+ * Hook that starts animation for players with specific permission.
+ */
 public class PermissionHook extends BaseHook<Player> {
 
-    // Should override in order for the listener to be registered
-    @Override
-    public void tickOngoingAnimations(ServerTickEndEvent event) {
-        super.tickOngoingAnimations(event);
+    @EventHandler
+    public void onConfigReload(ConfigReloadEvent event) {
+        List<Player> players = List.copyOf(ongoingAnimations.keySet());
+        for (Player player : players) {
+            startPermissionAnimationIfHas(player);
+        }
     }
 
     @EventHandler
