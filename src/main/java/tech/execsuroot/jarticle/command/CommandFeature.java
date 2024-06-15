@@ -4,6 +4,7 @@ import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import dev.jorel.commandapi.CommandAPILogger;
 import tech.execsuroot.jarticle.JarticlePlugin;
+import tech.execsuroot.jarticle.config.MainConfig;
 import tech.execsuroot.jarticle.feature.PluginFeature;
 
 import java.util.Set;
@@ -17,9 +18,7 @@ public class CommandFeature implements PluginFeature {
     public void onLoad(JarticlePlugin plugin) {
         CommandAPI.setLogger(CommandAPILogger.fromJavaLogger(plugin.getLogger()));
         CommandAPI.onLoad(new CommandAPIBukkitConfig(plugin).usePluginNamespace());
-        Set.of(
-                MainCommand.class
-        ).forEach(CommandAPI::registerCommand);
+        MainCommand.register(plugin);
     }
 
     @Override
